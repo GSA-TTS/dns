@@ -291,13 +291,13 @@ resource "aws_route53_record" "d_18f_gov__acme_challenge_atf-eregs_18f_gov_cname
 #   records = ["d1a8iv0i0iazmn.cloudfront.net"]
 # }
 
- resource "aws_route53_record" "d_18f_gov_atf-eregs_18f_gov_cname" {
-   zone_id = aws_route53_zone.d_18f_gov_zone.zone_id
-   name    = "atf-eregs.18f.gov."
-   type    = "CNAME"
-   ttl     = 120
-   records = ["atf-eregs.18f.gov.external-domains-production.cloud.gov."]
- }
+resource "aws_route53_record" "d_18f_gov_atf-eregs_18f_gov_cname" {
+  zone_id = aws_route53_zone.d_18f_gov_zone.zone_id
+  name    = "atf-eregs.18f.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["atf-eregs.18f.gov.external-domains-production.cloud.gov."]
+}
 
 resource "aws_route53_record" "d_18f_gov_atul-docker-presentation_18f_gov_a" {
   zone_id = aws_route53_zone.d_18f_gov_zone.zone_id
@@ -1074,14 +1074,6 @@ resource "aws_route53_record" "d_18f_gov_testing-cookbook_18f_gov_aaaa" {
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
-}
-
-resource "aws_route53_record" "d_18f_gov_tock_18f_gov_cname" {
-  zone_id = aws_route53_zone.d_18f_gov_zone.zone_id
-  name    = "tock.18f.gov."
-  type    = "CNAME"
-  ttl     = 300
-  records = ["production-domains-1-884689640.us-gov-west-1.elb.amazonaws.com."]
 }
 
 resource "aws_route53_record" "d_18f_gov_writing-lab-guide_18f_gov_a" {
