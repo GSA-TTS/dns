@@ -790,22 +790,6 @@ resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_3" {
   records = ["m6d3etxkxjut3c7bfl5bmzz5biqcjxhe.dkim.amazonses.com"]
 }
 
-# Mail handling for app.touchpoints.digital.gov
-resource "aws_route53_record" "app_touchpoints_digital_gov_smtp" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail.app.touchpoints.digital.gov."  # Changed to mail subdomain
-  type            = "MX"
-  ttl             = "600"
-  allow_overwrite = true
-  records         = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 # Application endpoint for app.touchpoints.digital.gov
 resource "aws_route53_record" "app_touchpoints_digital_gov_cname" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
@@ -820,8 +804,8 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_cname" {
   }
 }
 
-# Add SPF record for mail subdomain
-resource "aws_route53_record" "app_touchpoints_digital_gov_spf" {
+# ACME challenge for app.touchpoints.digital.gov - needed for certificate validation
+resource "aws_route53_record" "app_touchpoints_digital_gov_acme_challenge" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "_acme-challenge.app.touchpoints.digital.gov."
   type    = "CNAME"
@@ -829,31 +813,29 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_spf" {
   records = ["_acme-challenge.app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
 }
 
-resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_1" {
+# Mail handling for app subdomain - using a dedicated mail subdomain
+resource "aws_route53_record" "mail_app_touchpoints_digital_gov_mx" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "qqtoqzlc5a24irzufsu4lbdpoc3mvr3n._domainkey.app.touchpoints.digital.gov"
-  type            = "CNAME"
-  ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
-  records         = ["qqtoqzlc5a24irzufsu4lbdpoc3mvr3n.dkim.amazonses.com"]
+  name            = "mail.touchpoints.digital.gov."  # Using mail-app subdomain to avoid conflict
+  type            = "MX"
+  ttl             = "600"
+  allow_overwrite = true
+  records         = [
+    "10 inbound-smtp.us-east-1.amazonaws.com"
+  ]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
-resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_2" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "4dh5jgv5chdo2q3axkftnini7j7xkdjx._domainkey.app.touchpoints.digital.gov"
-  type            = "CNAME"
-  ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
-  records         = ["4dh5jgv5chdo2q3axkftnini7j7xkdjx.dkim.amazonses.com"]
-}
-
-resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "pwa5cvp3cde3aghrojag7ketcjaeytp2._domainkey.app.touchpoints.digital.gov"
-  type            = "CNAME"
-  ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
-  records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
+# SPF record for mail subdomain
+resource "aws_route53_record" "mail_app_touchpoints_digital_gov_spf" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "mail.touchpoints.digital.gov"  # Using mail-app subdomain to match MX record
+  type    = "TXT"
+  ttl     = 600
+  records = ["v=spf1 include:amazonses.com ~all"]
 }
 
 # Mail records moved to mail subdomain
@@ -965,22 +947,7 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
   records = ["anyljchthsaitorr6matbfeoeyug34jh.dkim.amazonses.com"]
 }
 
-# Touchpoints APP / MX Records
-# app.touchpoints.digital.gov
-resource "aws_route53_record" "app_touchpoints_digital_gov_mx" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "app.touchpoints.digital.gov."  # App-specific email handling
-  type            = "MX"
-  ttl             = "600"
-  allow_overwrite = true
-  records         = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
 
-  lifecycle {
-    prevent_destroy = true
-  }
-}
 
 resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
