@@ -804,10 +804,19 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_cname" {
   }
 }
 
+# ACME challenge for app.touchpoints.digital.gov - needed for certificate validation
+resource "aws_route53_record" "app_touchpoints_digital_gov_acme_challenge" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.app.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
 # Mail handling for app subdomain - using a dedicated mail subdomain
 resource "aws_route53_record" "mail_app_touchpoints_digital_gov_mx" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail-app.touchpoints.digital.gov."  # Dedicated mail subdomain
+  name            = "mail.touchpoints.digital.gov."  # Using mail-app subdomain to avoid conflict
   type            = "MX"
   ttl             = "600"
   allow_overwrite = true
@@ -823,7 +832,7 @@ resource "aws_route53_record" "mail_app_touchpoints_digital_gov_mx" {
 # SPF record for mail subdomain
 resource "aws_route53_record" "mail_app_touchpoints_digital_gov_spf" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "mail-app.touchpoints.digital.gov"
+  name    = "mail.touchpoints.digital.gov"  # Using mail-app subdomain to match MX record
   type    = "TXT"
   ttl     = 600
   records = ["v=spf1 include:amazonses.com ~all"]
@@ -938,22 +947,7 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
   records = ["anyljchthsaitorr6matbfeoeyug34jh.dkim.amazonses.com"]
 }
 
-# Touchpoints APP / MX Records
-# app.touchpoints.digital.gov
-resource "aws_route53_record" "app_touchpoints_digital_gov_mx" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "app.touchpoints.digital.gov."  # App-specific email handling
-  type            = "MX"
-  ttl             = "600"
-  allow_overwrite = true
-  records         = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
 
-  lifecycle {
-    prevent_destroy = true
-  }
-}
 
 resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
