@@ -856,22 +856,6 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
   records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
 }
 
-# Mail records moved to mail subdomain
-resource "aws_route53_record" "mail_touchpoints_digital_gov_mx" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail.touchpoints.digital.gov."  # Mail subdomain for general email
-  type            = "MX"
-  ttl             = "600"
-  allow_overwrite = true
-  records         = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 # Touchpoints Staging APP / Amazon SES Verification TXT Record
 resource "aws_route53_record" "touchpoints_staging_aws_ses" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -965,11 +949,10 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
   records = ["anyljchthsaitorr6matbfeoeyug34jh.dkim.amazonses.com"]
 }
 
-# Touchpoints APP / MX Records
-# app.touchpoints.digital.gov
-resource "aws_route53_record" "app_touchpoints_digital_gov_mx" {
+# Mail records moved to mail subdomain
+resource "aws_route53_record" "mail_touchpoints_digital_gov_mx" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "app.touchpoints.digital.gov."  # App-specific email handling
+  name            = "mail.touchpoints.digital.gov."  # Mail subdomain for general email
   type            = "MX"
   ttl             = "600"
   allow_overwrite = true
@@ -980,16 +963,6 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_mx" {
   lifecycle {
     prevent_destroy = true
   }
-}
-
-resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "mail.touchpoints.digital.gov"
-  type    = "MX"
-  ttl     = "600"
-  records = [
-    "10 feedback-smtp.us-east-1.amazonses.com"
-  ]
 }
 
 resource "aws_route53_record" "touchpoints_digital_gov_spf" {
