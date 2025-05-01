@@ -391,7 +391,7 @@ resource "aws_route53_record" "designsystem_digital_gov_aaaa" {
 }
 
 # v2.designsystem.digital.gov — CNAME -------------------------------
-# (Redirects to designsystem.digital.gov via "pages redirect")
+# (Redirects to designsystem.digital.gov via WAF)
 resource "aws_route53_record" "v2_designsystem_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "v2.designsystem.digital.gov."
@@ -433,23 +433,7 @@ resource "aws_route53_record" "v1_designsystem_digital_gov_aaaa" {
   }
 }
 
-# components.designsystem.digital.gov — CNAME -------------------------------
-resource "aws_route53_record" "components_designsystem_digital_gov_cname" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "components.designsystem.digital.gov."
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["components.designsystem.digital.gov.external-domains-production.cloud.gov."]
-}
 
-# _acme-challenge.components.designsystem.digital.gov — CNAME -------------------------------
-resource "aws_route53_record" "_acme-challenge_components_designsystem_digital_gov_cname" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "_acme-challenge.components.designsystem.digital.gov."
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["_acme-challenge.components.designsystem.digital.gov.external-domains-production.cloud.gov."]
-}
 
 # public-sans.digital.gov — A
 resource "aws_route53_record" "public_sans_digital_gov_a" {
@@ -475,6 +459,7 @@ resource "aws_route53_record" "public_sans_digital_gov_aaaa" {
 }
 
 # accessibility.digital.gov — CNAME -------------------------------
+# (Redirects to digital.gov/guides/accessibility-for-teams via WAF)
 resource "aws_route53_record" "accessibility_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "accessibility.digital.gov."
@@ -492,6 +477,7 @@ resource "aws_route53_record" "_acme-challenge_accessibility_digital_gov_cname" 
 }
 
 # emerging.digital.gov — CNAME -------------------------------
+# (Redirects to digital.gov/topics/emerging-tech via WAF)
 resource "aws_route53_record" "emerging_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "emerging.digital.gov."
