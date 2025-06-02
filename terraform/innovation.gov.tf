@@ -6,13 +6,14 @@ resource "aws_route53_zone" "innovation_toplevel" {
   }
 }
 
+# Redirect innovation.gov apex to permitting.innovation.gov
 resource "aws_route53_record" "innovation_gov_apex" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
   name    = "innovation.gov."
   type    = "A"
 
   alias {
-    name                   = "d2ntl68ywjm643.cloudfront.net."
+    name                   = "d1uq66d8ts87r6.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -24,19 +25,20 @@ resource "aws_route53_record" "innovation_gov_apex_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "d2ntl68ywjm643.cloudfront.net."
+    name                   = "d1uq66d8ts87r6.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
 }
 
+# Redirect www.innovation.gov to permitting.innovation.gov
 resource "aws_route53_record" "innovation_gov_www" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
   name    = "www.innovation.gov."
   type    = "A"
 
   alias {
-    name                   = "d2ntl68ywjm643.cloudfront.net."
+    name                   = "d1uq66d8ts87r6.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -48,7 +50,7 @@ resource "aws_route53_record" "innovation_gov_www_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "d2ntl68ywjm643.cloudfront.net."
+    name                   = "d1uq66d8ts87r6.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
