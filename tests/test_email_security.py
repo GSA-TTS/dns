@@ -3,9 +3,45 @@ import checkdmarc
 import pytest
 
 
-def is_second_level_domain(zone_name):
-    levels = zone_name.rstrip(".").split(".")
+def is_second_level_domain(zone):
+    levels = zone["Name"].rstrip(".").split(".")
     return len(levels) == 2
+
+
+def test_is_second_level_domain():
+    assert is_second_level_domain({"Name": "foo.bar"})
+    assert is_second_level_domain({"Name": "foo.bar."})
+    assert not is_second_level_domain({"Name": "foo.bar.baz."})
+
+
+def is_not_parked(zone_tags):
+    """Return true unless a zone has a tag with key 'parked' and value 'true'"""
+    for t in zone_tags:
+        if t["Key"] == "parked" and t["Value"] == "true":
+            return False
+
+    return True
+
+
+def test_is_not_parked():
+    assert is_not_parked([{"Key": "parked", "Value": "false"}])
+    assert is_not_parked([{"Key": "stuff", "Value": "true"}])
+    assert not is_not_parked([{"Key": "parked", "Value": "true"}])
+    assert not is_not_parked(
+        [{"Key": "something", "Value": "else"}, {"Key": "parked", "Value": "true"}]
+    )
+
+
+def get_zone_tags(route53_client, zone):
+    return [
+        t
+        for t in route53_client.list_tags_for_resource(
+            ResourceType="hostedzone",
+            ResourceId=zone["Id"].removeprefix("/hostedzone/"),
+        )
+        .get("ResourceTagSet", {})
+        .get("Tags", [])
+    ]
 
 
 def second_level_domains():
@@ -15,14 +51,8 @@ def second_level_domains():
     return set(
         zone["Name"].rstrip(".")
         for zone in response["HostedZones"]
-        if is_second_level_domain(zone["Name"])
+        if is_second_level_domain(zone) and is_not_parked(get_zone_tags(route53, zone))
     )
-
-
-def test_is_second_level_domain():
-    assert is_second_level_domain("foo.bar")
-    assert is_second_level_domain("foo.bar.")
-    assert not is_second_level_domain("foo.bar.baz.")
 
 
 # all second-level domains must have SPF and DMARC
