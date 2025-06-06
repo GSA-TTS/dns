@@ -175,14 +175,6 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
   }
 }
 
-# resource "aws_route53_record" "www_digital_gov_digital_gov_cname" {
-#   zone_id = aws_route53_zone.digital_toplevel.zone_id
-#   name    = "www.digital.gov."
-#   type    = "CNAME"
-#   ttl     = 120
-#   records = ["digital.gov."]
-# }
-
 ##
 ##       _ _____           _         _   _         
 ##      / |  _  |___ ___ _| |_ _ ___| |_|_|___ ___ 
@@ -294,34 +286,6 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
 ##                           | |            
 ##                           |_|            
 ##  
-
-##
-## OLD PAGES RECORDS
-##
-
-# resource "aws_route53_record" "digital_gov_apex" {
-#   zone_id = aws_route53_zone.digital_toplevel.zone_id
-#   name    = "digital.gov."
-#   type    = "A"
-
-#   alias {
-#     name                   = "d2q1i25any8vwy.cloudfront.net."
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
-#     evaluate_target_health = false
-#   }
-# }
-
-# resource "aws_route53_record" "digital_gov_apex_aaaa" {
-#   zone_id = aws_route53_zone.digital_toplevel.zone_id
-#   name    = "digital.gov."
-#   type    = "AAAA"
-
-#   alias {
-#     name                   = "d2q1i25any8vwy.cloudfront.net."
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
-#     evaluate_target_health = false
-#   }
-# }
 
 # # www.digital.gov — redirects to digital.gov through pages_redirect
 resource "aws_route53_record" "digital_gov_www" {
@@ -495,30 +459,6 @@ resource "aws_route53_record" "_acme-challenge_emerging_digital_gov_cname" {
   records = ["_acme-challenge.emerging.digital.gov.external-domains-production.cloud.gov."]
 }
 
-# pra.digital.gov — A -------------------------------
-#resource "aws_route53_record" "pra_digital_gov_a" {
-#  zone_id = aws_route53_zone.digital_toplevel.zone_id
-#  name    = "pra.digital.gov."
-#  type    = "A"
-#  alias {
-#    name                   = "d3vwm5h0acan67.cloudfront.net."
-#    zone_id                = local.cloud_gov_cloudfront_zone_id
-#    evaluate_target_health = false
-#  }
-#}
-
-#resource "aws_route53_record" "pra_digital_gov_aaaa" {
-#  zone_id = aws_route53_zone.digital_toplevel.zone_id
-#  name    = "pra.digital.gov."
-#  type    = "AAAA"
-#  alias {
-#    name                   = "d3vwm5h0acan67.cloudfront.net."
-#    zone_id                = local.cloud_gov_cloudfront_zone_id
-#    evaluate_target_health = false
-#  }
-#}
-
-
 # pra.digital.gov — CNAME -------------------------------
 resource "aws_route53_record" "pra_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -604,31 +544,6 @@ resource "aws_route53_record" "demo_app_touchpoints_digital_gov_ses_cname_1" {
   type    = "CNAME"
   ttl     = 1800
   records = ["hg7wfopagu3tgfjnqijxrx7gs34ihjo5.dkim.amazonses.com"]
-}
-
-# DEMO Touchpoints APP / Amazon SES CNAME for email address feedback-analytics@
-# demo-app.touchpoints.digital.gov — CNAME + DKIM 1 of 3
-# Proof of ownership over the email address
-resource "aws_route53_record" "demo_app_touchpoints_digital_gov_ses_cname_feedback_analytics_1" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "isqdr7f2pc3xk7e47vrh2j2dcuqh26f4._domainkey.gsa.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["isqdr7f2pc3xk7e47vrh2j2dcuqh26f4.dkim.amazonses.com"]
-}
-resource "aws_route53_record" "demo_app_touchpoints_digital_gov_ses_cname_feedback_analytics_2" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "e3pofe6g2od3r7iz5cb3uuamzqoswivr._domainkey.gsa.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["e3pofe6g2od3r7iz5cb3uuamzqoswivr.dkim.amazonses.com"]
-}
-resource "aws_route53_record" "demo_app_touchpoints_digital_gov_ses_cname_feedback_analytics_3" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "4cxntmmscgkefitlpux7uuf7qvong7br._domainkey.gsa.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["4cxntmmscgkefitlpux7uuf7qvong7br.dkim.amazonses.com"]
 }
 
 # DEMO Touchpoints APP / Amazon SES CNAME
@@ -798,7 +713,7 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_1" {
   name            = "qqtoqzlc5a24irzufsu4lbdpoc3mvr3n._domainkey.app.touchpoints.digital.gov"
   type            = "CNAME"
   ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
+  allow_overwrite = true # Add this to handle conflicts
   records         = ["qqtoqzlc5a24irzufsu4lbdpoc3mvr3n.dkim.amazonses.com"]
 }
 
@@ -807,7 +722,7 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_2" {
   name            = "4dh5jgv5chdo2q3axkftnini7j7xkdjx._domainkey.app.touchpoints.digital.gov"
   type            = "CNAME"
   ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
+  allow_overwrite = true # Add this to handle conflicts
   records         = ["4dh5jgv5chdo2q3axkftnini7j7xkdjx.dkim.amazonses.com"]
 }
 
@@ -816,63 +731,24 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
   name            = "pwa5cvp3cde3aghrojag7ketcjaeytp2._domainkey.app.touchpoints.digital.gov"
   type            = "CNAME"
   ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
+  allow_overwrite = true # Add this to handle conflicts
   records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
 }
 
 # Mail records moved to mail subdomain
 resource "aws_route53_record" "mail_touchpoints_digital_gov_mx" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail.touchpoints.digital.gov."  # Mail subdomain for general email
+  name            = "mail.touchpoints.digital.gov." # Mail subdomain for general email
   type            = "MX"
   ttl             = "600"
   allow_overwrite = true
-  records         = [
+  records = [
     "10 inbound-smtp.us-east-1.amazonaws.com"
   ]
 
   lifecycle {
     prevent_destroy = true
   }
-}
-
-# Touchpoints Staging APP / Amazon SES Verification TXT Record
-resource "aws_route53_record" "touchpoints_staging_aws_ses" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "_amazonses.touchpoints-staging.app.cloud.gov"
-  type    = "TXT"
-  ttl     = 120
-  records = [
-    "FCYaHGmDC96KOetecQ23s3gKA6Z7TJ6PNQATBQmLPM8="
-  ]
-}
-
-# Touchpoints Staging APP / 3 cnames to enable DKIM for Amazon SES -------------
-# DKIM 1 of 3
-resource "aws_route53_record" "touchpoints_staging_digital_gov_ses_cname_1" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "26hqif4fsgvtyuqksytfsw5pjb22xoxj._domainkey.touchpoints-staging.app.cloud.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["26hqif4fsgvtyuqksytfsw5pjb22xoxj.dkim.amazonses.com"]
-}
-
-# DKIM 2 of 3
-resource "aws_route53_record" "touchpoints_staging_digital_gov_ses_cname_2" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "vceeiyemjswgbeegriak3wci7gnvxg2v._domainkey.touchpoints-staging.app.cloud.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["vceeiyemjswgbeegriak3wci7gnvxg2v.dkim.amazonses.com"]
-}
-
-# DKIM 3 of 3
-resource "aws_route53_record" "touchpoints_staging_digital_gov_ses_cname_3" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "w5yzy55zindfay2hlzgzj7znigctbpyb._domainkey.touchpoints-staging.app.cloud.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["w5yzy55zindfay2hlzgzj7znigctbpyb.dkim.amazonses.com"]
 }
 
 # Touchpoints APP / 3 cnames to enable DKIM for Amazon SES ---------------------
@@ -942,9 +818,9 @@ resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
 
 resource "aws_route53_record" "touchpoints_digital_gov_spf" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name = "mail.touchpoints.digital.gov"
-  type = "TXT"
-  ttl = 600
+  name    = "mail.touchpoints.digital.gov"
+  type    = "TXT"
+  ttl     = 600
   records = ["v=spf1 include:amazonses.com ~all"]
 }
 
