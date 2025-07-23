@@ -241,6 +241,23 @@ resource "aws_route53_record" "vote_gov_caa" {
     ]
 }
 
+# ACME challenge TXT records
+resource "aws_route53_record" "acme_challenge_search_vote_gov_txt" {
+  zone_id = aws_route53_zone.vote_gov_zone.zone_id
+  name    = "_acme-challenge.search.vote.gov."
+  type    = "TXT"
+  ttl     = 120
+  records = ["atLkvFYac0xns9Ul_rVGu5NcYtVAnJJBVMLto-qLNiQ"]
+}
+
+resource "aws_route53_record" "acme_challenge_vote_gov_txt" {
+  zone_id = aws_route53_zone.vote_gov_zone.zone_id
+  name    = "_acme-challenge.vote.gov."
+  type    = "TXT"
+  ttl     = 120
+  records = ["4BBiQ14TWUq9OoJKu1W2Ye7kDCBiZ2itHTS32NbxH5g"]
+}
+
 # CAA records for subdomains (cannot add for search.vote.gov due to existing CNAME)
 # Note: search.vote.gov has a CNAME record, so CAA record would conflict
 # CAA inheritance from parent domain (vote.gov) will apply to search.vote.gov
