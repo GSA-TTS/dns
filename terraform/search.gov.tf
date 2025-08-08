@@ -46,6 +46,24 @@ resource "aws_route53_record" "www_search_gov_acme_challenge" {
   records = ["_acme-challenge.www.search.gov.external-domains-production.cloud.gov."]
 }
 
+## TEMPORARY for validation of planned hosting setup 2025-08-08
+resource "aws_route53_record" "whtnfrvemzeq_search_gov_acme_challenge" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "_acme-challenge.whtnfrvemzeq.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.whtnfrvemzeq.search.gov.external-domains-production.cloud.gov."]
+}
+
+## TEMPORARY for validation of planned hosting setup 2025-08-08
+resource "aws_route53_record" "search_gov_whtnfrvemzeq" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "whtnfrvemzeq.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["whtnfrvemzeq.search.gov.external-domains-production.cloud.gov."]
+}
+
 # www.search.gov — redirects to search.gov through pages_redirect
 resource "aws_route53_record" "search_gov_www" {
   zone_id = aws_route53_zone.search_toplevel.zone_id
