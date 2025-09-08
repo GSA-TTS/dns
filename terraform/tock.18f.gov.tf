@@ -12,7 +12,7 @@ resource "aws_route53_record" "d_18f_gov_tock_18f_gov_cname" {
   name    = "tock.18f.gov."
   type    = "CNAME"
   ttl     = 300
-  records = ["production-domains-1-884689640.us-gov-west-1.elb.amazonaws.com."]
+  records = ["tock.18f.gov.external-domains-production.cloud.gov."]
 }
 
 // Commented out to maintain compatibility with commented out 18f.gov.tf zone definition
