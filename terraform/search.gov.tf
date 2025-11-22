@@ -12,7 +12,7 @@ resource "aws_route53_record" "search_gov_apex" {
   type    = "A"
 
   alias {
-    name                   = "dcp2c9fh8vtdl.cloudfront.net."
+    name                   = "d3b0ro7nh4961l.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -24,35 +24,53 @@ resource "aws_route53_record" "search_gov_apex_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dcp2c9fh8vtdl.cloudfront.net."
+    name                   = "d3b0ro7nh4961l.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
 }
 
-# www.search.gov — redirects to search.gov through pages_redirect
-resource "aws_route53_record" "search_gov_www" {
+resource "aws_route53_record" "search_gov_www_cname" {
   zone_id = aws_route53_zone.search_toplevel.zone_id
   name    = "www.search.gov."
-  type    = "A"
-
-  alias {
-    name                   = "dv0x4a4ilr842.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
+  type    = "CNAME"
+  ttl     = 120
+  records = ["www.search.gov.external-domains-production.cloud.gov."]
 }
 
-resource "aws_route53_record" "search_gov_www_aaaa" {
+resource "aws_route53_record" "search_gov_acme_challenge" {
   zone_id = aws_route53_zone.search_toplevel.zone_id
-  name    = "www.search.gov."
-  type    = "AAAA"
+  name    = "_acme-challenge.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.search.gov.external-domains-production.cloud.gov."]
+}
 
-  alias {
-    name                   = "dv0x4a4ilr842.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
+resource "aws_route53_record" "www_search_gov_acme_challenge" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "_acme-challenge.www.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.www.search.gov.external-domains-production.cloud.gov."]
+}
+
+
+## TEMPORARY for validation of planned hosting setup 2025-08-08
+resource "aws_route53_record" "whtnfrvemzeq_search_gov_acme_challenge" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "_acme-challenge.whtnfrvemzeq.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.whtnfrvemzeq.search.gov.external-domains-production.cloud.gov."]
+}
+
+## TEMPORARY for validation of planned hosting setup 2025-08-08
+resource "aws_route53_record" "search_gov_whtnfrvemzeq" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "whtnfrvemzeq.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["whtnfrvemzeq.search.gov.external-domains-production.cloud.gov."]
 }
 
 # find.search.gov

@@ -171,6 +171,28 @@ resource "aws_route53_record" "datagov__caa" {
 }
 
 
+resource "aws_route53_record" "datagov_acmechallengeacmechallengecatalogbetadatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.catalog-beta"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.catalog-beta.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
+resource "aws_route53_record" "datagov_acmechallengeacmechallengeharvestdatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.harvest"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.harvest.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
 resource "aws_route53_record" "datagov_acmechallengeacmechallengedatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "_acme-challenge"
@@ -288,6 +310,28 @@ resource "aws_route53_record" "datagov_catalogdevd2jqk88ququ1n9cloudfrontnet_cna
 
   ttl     = 300
   records = ["d2jqk88ququ1n9.cloudfront.net"]
+
+}
+
+
+resource "aws_route53_record" "datagov_catalogbetadatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "catalog-beta"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["catalog-beta.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
+resource "aws_route53_record" "datagov_harvestdatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "harvest"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["harvest.data.gov.external-domains-production.cloud.gov."]
 
 }
 

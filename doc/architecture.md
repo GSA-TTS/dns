@@ -78,6 +78,19 @@ resource "aws_route53_record" "example_com_host_domain_com_a" {
   records = ["172.16.11.23"]
 }
 
+# Enable DNSSEC
+
+module "example_com_dnssec" {
+  source = "./dnssec"
+  zone = aws_route53_zone.example_com_zone
+}
+
+# Output the DS record that must be added to the parent zone to establish the
+# chain of trust.
+
+output "example_com_ds" {
+  value = module.example_com_dnssec.ds_record
+}
 
 # output name servers for use with registrar of domain, to point
 # public DNS at this AWS Route 53 zone

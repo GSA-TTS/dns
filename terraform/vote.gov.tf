@@ -229,13 +229,30 @@ resource "aws_route53_record" "search_vote_gov_cname" {
   records = ["vote-en.sites.infr.search.usa.gov."]
 }
 
+# CAA records for certificate authority authorization
+resource "aws_route53_record" "vote_gov_caa" {
+  zone_id = aws_route53_zone.vote_gov_zone.zone_id
+  name    = "vote.gov."
+  type    = "CAA"
+  ttl     = 300
+  records = [
+    "0 issue \"letsencrypt.org\"",
+    "0 issue \"digicert.com\""
+    ]
+}
+
+# CAA records for subdomains (cannot add for search.vote.gov due to existing CNAME)
+# Note: search.vote.gov has a CNAME record, so CAA record would conflict
+# CAA inheritance from parent domain (vote.gov) will apply to search.vote.gov
+
 module "vote_gov__email_security" {
   source = "./email_security"
 
   zone_id = aws_route53_zone.vote_gov_zone.zone_id
   txt_records = [
     local.spf_no_mail,
-    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0"
+    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0",
+    "_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow"
   ]
 }
 
