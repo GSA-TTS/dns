@@ -411,14 +411,6 @@ resource "aws_route53_record" "datagov_resourcesstagingd13l8e1a7ekkcacloudfrontn
 
 }
 
-resource "aws_route53_record" "datagov_strategy_acmechallenge" {
-  zone_id = aws_route53_zone.datagov_zone.zone_id
-  name    = "_acme-challenge.strategy.data.gov."
-  type    = "CNAME"
-  ttl     = 300
-  records = ["_acme-challenge.strategy.data.gov.external-domains-production.cloud.gov."]
-}
-
 resource "aws_route53_record" "datagov_strategyd3mxkpq217356pcloudfrontnet_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "strategy"
@@ -582,11 +574,9 @@ resource "aws_route53_record" "datagov_acmechallengeresourcesstagingCTRQ5trgMF0K
 resource "aws_route53_record" "datagov_acmechallengestrategyHjy5O04QmUqj4qgVY4jRisqf9oMl3G3z0pRo4Irlcg_txt" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "_acme-challenge.strategy"
-  type    = "TXT"
-
+  type    = "CNAME"
   ttl     = 300
-  records = ["H_jy5O04QmUqj4qgVY4jRisqf9oMl3G3z0pRo4Irlcg"]
-
+  records = ["_acme-challenge.strategy.data.gov.external-domains-production.cloud.gov."]
 }
 
 
