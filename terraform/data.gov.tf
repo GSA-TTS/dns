@@ -12,7 +12,7 @@ resource "aws_route53_zone" "datagov_zone" {
 #checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53
 resource "aws_kms_key" "datagov_zone" {
 
-  # See Route53 key requirements here: 
+  # See Route53 key requirements here:
   # https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring-dnssec-cmk-requirements.html
   customer_master_key_spec = "ECC_NIST_P256"
   deletion_window_in_days  = 7
@@ -411,14 +411,20 @@ resource "aws_route53_record" "datagov_resourcesstagingd13l8e1a7ekkcacloudfrontn
 
 }
 
+resource "aws_route53_record" "datagov_strategy_acmechallenge" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.strategy.data.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.strategy.data.gov.external-domains-production.cloud.gov."]
+}
+
 resource "aws_route53_record" "datagov_strategyd3mxkpq217356pcloudfrontnet_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "strategy"
   type    = "CNAME"
-
   ttl     = 300
-  records = ["d3mxkpq217356p.cloudfront.net"]
-
+  records = ["strategy.data.gov.external-domains-production.cloud.gov."]
 }
 
 
