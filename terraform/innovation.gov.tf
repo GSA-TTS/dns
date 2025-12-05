@@ -1,3 +1,4 @@
+// innovation.gov
 resource "aws_route53_zone" "innovation_toplevel" {
   name = "innovation.gov"
   tags = {
@@ -27,6 +28,7 @@ resource "aws_route53_record" "innovation_gov_www_aaaa" {
   }
 }
 
+// permitting.innovation.gov
 resource "aws_route53_record" "acme_challenge_permitting_innovation_gov_cname" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
   name    = "_acme-challenge.permitting.innovation.gov."
@@ -43,6 +45,7 @@ resource "aws_route53_record" "permitting_innovation_gov_cname" {
   records = ["permitting.innovation.gov.external-domains-production.cloud.gov."]
 }
 
+// ce.permitting.innovation.gov
 resource "aws_route53_record" "acme_challenge_ce_permitting_innovation_gov_cname" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
   name    = "_acme-challenge.ce.permitting.innovation.gov."
@@ -57,6 +60,57 @@ resource "aws_route53_record" "ce_permitting_innovation_gov_cname" {
   type    = "CNAME"
   ttl     = 300
   records = ["ce.permitting.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+// ceworks.permitting.innovation.gov
+resource "aws_route53_record" "acme_challenge_ceworks_permitting_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "_acme-challenge.ceworks.permitting.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.ceworks.permitting.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "ceworks_permitting_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "ceworks.permitting.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["ceworks.permitting.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+// workflow.innovation.gov
+resource "aws_route53_record" "acme_challenge_workflow_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "_acme-challenge.workflow.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.workflow.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "workflow_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "workflow.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["workflow.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+// auth.workflow.innovation.gov
+resource "aws_route53_record" "acme_challenge_auth_workflow_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "_acme-challenge.auth.workflow.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.auth.workflow.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "auth_workflow_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "auth.workflow.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["auth.workflow.innovation.gov.external-domains-production.cloud.gov."]
 }
 
 module "innovation_gov__email_security" {
