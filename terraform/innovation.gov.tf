@@ -96,6 +96,23 @@ resource "aws_route53_record" "workflow_innovation_gov_cname" {
   records = ["workflow.innovation.gov.external-domains-production.cloud.gov."]
 }
 
+// auth.workflow.innovation.gov
+resource "aws_route53_record" "acme_challenge_auth_workflow_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "_acme-challenge.auth.workflow.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.auth.workflow.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "auth_workflow_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "auth.workflow.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["auth.workflow.innovation.gov.external-domains-production.cloud.gov."]
+}
+
 module "innovation_gov__email_security" {
   source  = "./email_security"
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
