@@ -12,7 +12,7 @@ resource "aws_route53_record" "govloans_gov_apex" {
   type    = "A"
   alias {
     name                   = "d2pvs1juwa2drp.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -23,7 +23,7 @@ resource "aws_route53_record" "govloans_gov_apex_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "d2pvs1juwa2drp.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -55,7 +55,7 @@ resource "aws_route53_record" "govloans_gov_www" {
 module "govloans_gov_emailsecurity" {
   source = "./email_security"
 
-  zone_id = aws_route53_zone.govloans_gov_zone.zone_id
+  zone_id     = aws_route53_zone.govloans_gov_zone.zone_id
   txt_records = ["v=spf1 -all"]
 }
 

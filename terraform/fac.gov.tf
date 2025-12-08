@@ -24,7 +24,7 @@ resource "aws_route53_record" "fac_gov_fac_gov_a" {
 
   alias {
     name                   = "d3bkpuj8pzucbe.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -37,7 +37,7 @@ resource "aws_route53_record" "fac_gov_fac_gov_aaaa" {
 
   alias {
     name                   = "d3bkpuj8pzucbe.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -168,16 +168,16 @@ resource "aws_route53_record" "fac_gov__mx" {
   type    = "MX"
   ttl     = 60
   records = [
-    "1 aspmx.l.google.com.", 
-    "5 alt1.aspmx.l.google.com.", 
+    "1 aspmx.l.google.com.",
+    "5 alt1.aspmx.l.google.com.",
     "5 alt2.aspmx.l.google.com.",
-    "10 alt3.aspmx.l.google.com.", 
-    "10 alt4.aspmx.l.google.com.", 
+    "10 alt3.aspmx.l.google.com.",
+    "10 alt4.aspmx.l.google.com.",
   ]
 }
-  
+
 # DKIM record for mail from fac.gov
-  resource "aws_route53_record" "fac_gov__dkim" {
+resource "aws_route53_record" "fac_gov__dkim" {
   zone_id = aws_route53_zone.fac_gov_zone.zone_id
   name    = "google._domainkey.fac.gov."
   type    = "TXT"

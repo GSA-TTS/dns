@@ -13,7 +13,7 @@ resource "aws_route53_record" "www" {
 
   alias {
     name                   = "dgevgiwb7xxpw.cloudfront.net"
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -25,7 +25,7 @@ resource "aws_route53_record" "www_aaaa" {
 
   alias {
     name                   = "dgevgiwb7xxpw.cloudfront.net"
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -126,7 +126,7 @@ resource "aws_route53_record" "d_pif_gov__acme_challenge_paygap_pif_cname" {
   ttl     = 120
   records = ["_acme-challenge.paygap.pif.gov.external-domains-production.cloud.gov."]
 }
-  
+
 resource "aws_route53_record" "paygap_pif_cname" {
   zone_id = aws_route53_zone.pif_toplevel.zone_id
   name    = "paygap.pif.gov."
@@ -144,11 +144,11 @@ resource "aws_route53_record" "d_pif_gov__acme_challenge_tophealth_pif_cname" {
 }
 
 resource "aws_route53_record" "tophealth_pif_cname" {
- zone_id = aws_route53_zone.pif_toplevel.zone_id
- name    = "tophealth.pif.gov."
- type    = "CNAME"
- ttl     = 120
- records = ["tophealth.pif.gov.external-domains-production.cloud.gov."]
+  zone_id = aws_route53_zone.pif_toplevel.zone_id
+  name    = "tophealth.pif.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["tophealth.pif.gov.external-domains-production.cloud.gov."]
 }
 
 resource "aws_route53_record" "review_cname" {
@@ -166,7 +166,7 @@ resource "aws_route53_record" "www-main" {
 
   alias {
     name                   = "dgevgiwb7xxpw.cloudfront.net"
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -178,7 +178,7 @@ resource "aws_route53_record" "www-main_aaaa" {
 
   alias {
     name                   = "dgevgiwb7xxpw.cloudfront.net"
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
