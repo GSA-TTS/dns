@@ -5,6 +5,14 @@ resource "aws_route53_zone" "usa_gov_zone" {
   }
 }
 
+resource "aws_route53_record" "usa_gov_analytics_challenge" {
+  zone_id = aws_route53_zone.usa_gov_zone.zone_id
+  name    = "_acme-challenge.analytics.usa.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.analytics.usa.gov.external-domains-production.cloud.gov."]
+}
+
 resource "aws_route53_record" "usa_gov_analytics_usa_gov_a" {
   zone_id = aws_route53_zone.usa_gov_zone.zone_id
   name    = "analytics.usa.gov."
