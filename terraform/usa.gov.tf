@@ -13,28 +13,6 @@ resource "aws_route53_record" "usa_gov_analytics_challenge" {
   records = ["_acme-challenge.analytics.usa.gov.external-domains-production.cloud.gov."]
 }
 
-resource "aws_route53_record" "usa_gov_analytics_usa_gov_a" {
-  zone_id = aws_route53_zone.usa_gov_zone.zone_id
-  name    = "analytics.usa.gov."
-  type    = "A"
-  alias {
-    name                   = "dkm80j4hktly2.cloudfront.net."
-    zone_id                = local.cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "usa_gov_analytics_usa_gov_aaaa" {
-  zone_id = aws_route53_zone.usa_gov_zone.zone_id
-  name    = "analytics.usa.gov."
-  type    = "AAAA"
-  alias {
-    name                   = "dkm80j4hktly2.cloudfront.net."
-    zone_id                = local.cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
-
 # USWDS ------------------------------------------------
 
 #module "usa_gov__components_standards_usa_gov_redirect" {
