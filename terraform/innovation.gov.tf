@@ -12,7 +12,7 @@ resource "aws_route53_record" "innovation_gov_apex_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "d2ntl68ywjm643.cloudfront.net" # Ensure this CloudFront distribution is configured to handle apex requests
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -23,7 +23,7 @@ resource "aws_route53_record" "innovation_gov_www_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "d2ntl68ywjm643.cloudfront.net"
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }

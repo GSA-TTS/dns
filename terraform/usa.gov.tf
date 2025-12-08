@@ -19,7 +19,7 @@ resource "aws_route53_record" "usa_gov_analytics_usa_gov_a" {
   type    = "A"
   alias {
     name                   = "dkm80j4hktly2.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -30,7 +30,7 @@ resource "aws_route53_record" "usa_gov_analytics_usa_gov_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "dkm80j4hktly2.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }

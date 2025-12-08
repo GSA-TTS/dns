@@ -13,7 +13,7 @@ resource "aws_route53_record" "analytics_usa_gov_analytics_usa_gov_a" {
 
   alias {
     name                   = "d2rprfiomwib2l.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
