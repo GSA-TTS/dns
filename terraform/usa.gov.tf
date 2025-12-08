@@ -13,6 +13,14 @@ resource "aws_route53_record" "usa_gov_analytics_challenge" {
   records = ["_acme-challenge.analytics.usa.gov.external-domains-production.cloud.gov."]
 }
 
+resource "aws_route53_record" "usa_gov_analytics_cname" {
+  zone_id = aws_route53_zone.usa_gov_zone.zone_id
+  name    = "analytics.usa.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["analytics.usa.gov.external-domains-production.cloud.gov."]
+}
+
 # USWDS ------------------------------------------------
 
 #module "usa_gov__components_standards_usa_gov_redirect" {
