@@ -351,30 +351,6 @@ resource "aws_route53_record" "acme_challenge_v2_designsystem_digital_gov_cname"
 }
 
 # v1.designsystem.digital.gov — A -------------------------------
-# TODO: Remove this once we've migrated to the new cloud.gov CDN service
-resource "aws_route53_record" "v1_designsystem_digital_gov_a" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "v1.designsystem.digital.gov."
-  type    = "A"
-  alias {
-    name                   = "d5bhevr9bklr9.cloudfront.net."
-    zone_id                = local.cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
-
-# TODO: Remove this once we've migrated to the new cloud.gov CDN service
-resource "aws_route53_record" "v1_designsystem_digital_gov_aaaa" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "v1.designsystem.digital.gov."
-  type    = "AAAA"
-  alias {
-    name                   = "d5bhevr9bklr9.cloudfront.net."
-    zone_id                = local.cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
-
 # TODO: Uncomment this once we've migrated to the new cloud.gov CDN service
 # resource "aws_route53_record" "v1_designsystem_digital_gov_cname" {
 #   zone_id = aws_route53_zone.digital_toplevel.zone_id
