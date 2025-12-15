@@ -350,15 +350,14 @@ resource "aws_route53_record" "acme_challenge_v2_designsystem_digital_gov_cname"
   records = ["_acme-challenge.v2.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
 
-# v1.designsystem.digital.gov — A -------------------------------
-# TODO: Uncomment this once we've migrated to the new cloud.gov CDN service
-# resource "aws_route53_record" "v1_designsystem_digital_gov_cname" {
-#   zone_id = aws_route53_zone.digital_toplevel.zone_id
-#   name    = "v1.designsystem.digital.gov."
-#   type    = "CNAME"
-#   ttl     = 120
-#   records = ["v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
-# }
+# v1.designsystem.digital.gov — CNAME -------------------------------
+resource "aws_route53_record" "v1_designsystem_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "v1.designsystem.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
+}
 
 resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -367,8 +366,6 @@ resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname"
   ttl     = 120
   records = ["_acme-challenge.v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
-
-
 
 # public-sans.digital.gov — A
 resource "aws_route53_record" "public_sans_digital_gov_a" {
