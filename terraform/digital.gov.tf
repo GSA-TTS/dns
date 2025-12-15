@@ -15,7 +15,7 @@ resource "aws_route53_zone" "digital_toplevel" {
 # Enable DNSSEC for digital.gov.
 module "digital_gov_dnssec" {
   source = "./dnssec"
-  zone = aws_route53_zone.digital_toplevel
+  zone   = aws_route53_zone.digital_toplevel
 }
 
 output "digital_gov_ds" {
@@ -78,7 +78,7 @@ resource "aws_route53_record" "digital_gov_digital_gov_a" {
   type    = "A"
   alias {
     name                   = "d3arzeyfcjeh5j.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -89,7 +89,7 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "d3arzeyfcjeh5j.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -225,7 +225,7 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
 
 #   alias {
 #     name                   = "d2q1i25any8vwy.cloudfront.net."
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
+#     zone_id                = local.cloudfront_zone_id
 #     evaluate_target_health = false
 #   }
 # }
@@ -237,7 +237,7 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
 
 #   alias {
 #     name                   = "d2q1i25any8vwy.cloudfront.net."
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
+#     zone_id                = local.cloudfront_zone_id
 #     evaluate_target_health = false
 #   }
 # }
@@ -250,7 +250,7 @@ resource "aws_route53_record" "digital_gov_www" {
 
   alias {
     name                   = "d11gdxqvugzxkr.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -262,7 +262,7 @@ resource "aws_route53_record" "digital_gov_www_aaaa" {
 
   alias {
     name                   = "d11gdxqvugzxkr.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -292,7 +292,7 @@ resource "aws_route53_record" "designsystem_digital_gov_a" {
   type    = "A"
   alias {
     name                   = "dlu3fkwowya06.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -306,7 +306,7 @@ resource "aws_route53_record" "designsystem_digital_gov_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "dlu3fkwowya06.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -350,39 +350,14 @@ resource "aws_route53_record" "acme_challenge_v2_designsystem_digital_gov_cname"
   records = ["_acme-challenge.v2.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
 
-# v1.designsystem.digital.gov — A -------------------------------
-# TODO: Remove this once we've migrated to the new cloud.gov CDN service
-resource "aws_route53_record" "v1_designsystem_digital_gov_a" {
+# v1.designsystem.digital.gov — CNAME -------------------------------
+resource "aws_route53_record" "v1_designsystem_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "v1.designsystem.digital.gov."
-  type    = "A"
-  alias {
-    name                   = "d5bhevr9bklr9.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
+  type    = "CNAME"
+  ttl     = 120
+  records = ["v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
-
-# TODO: Remove this once we've migrated to the new cloud.gov CDN service
-resource "aws_route53_record" "v1_designsystem_digital_gov_aaaa" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "v1.designsystem.digital.gov."
-  type    = "AAAA"
-  alias {
-    name                   = "d5bhevr9bklr9.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
-
-# TODO: Uncomment this once we've migrated to the new cloud.gov CDN service
-# resource "aws_route53_record" "v1_designsystem_digital_gov_cname" {
-#   zone_id = aws_route53_zone.digital_toplevel.zone_id
-#   name    = "v1.designsystem.digital.gov."
-#   type    = "CNAME"
-#   ttl     = 120
-#   records = ["v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
-# }
 
 resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -392,8 +367,6 @@ resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname"
   records = ["_acme-challenge.v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
 
-
-
 # public-sans.digital.gov — A
 resource "aws_route53_record" "public_sans_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -401,7 +374,7 @@ resource "aws_route53_record" "public_sans_digital_gov_a" {
   type    = "A"
   alias {
     name                   = "d30jruftdogur6.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -412,7 +385,7 @@ resource "aws_route53_record" "public_sans_digital_gov_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "d30jruftdogur6.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -461,7 +434,7 @@ resource "aws_route53_record" "_acme-challenge_emerging_digital_gov_cname" {
 #  type    = "A"
 #  alias {
 #    name                   = "d3vwm5h0acan67.cloudfront.net."
-#    zone_id                = local.cloud_gov_cloudfront_zone_id
+#    zone_id                = local.cloudfront_zone_id
 #    evaluate_target_health = false
 #  }
 #}
@@ -472,7 +445,7 @@ resource "aws_route53_record" "_acme-challenge_emerging_digital_gov_cname" {
 #  type    = "AAAA"
 #  alias {
 #    name                   = "d3vwm5h0acan67.cloudfront.net."
-#    zone_id                = local.cloud_gov_cloudfront_zone_id
+#    zone_id                = local.cloudfront_zone_id
 #    evaluate_target_health = false
 #  }
 #}
@@ -526,7 +499,7 @@ resource "aws_route53_record" "demo_touchpoints_digital_gov_a" {
   type    = "A"
   alias {
     name                   = "dcxk3q3d8gzx7.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -537,7 +510,7 @@ resource "aws_route53_record" "demo_touchpoints_digital_gov_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "dcxk3q3d8gzx7.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -619,7 +592,7 @@ resource "aws_route53_record" "touchpoints_digital_gov_a" {
   type    = "A"
   alias {
     name                   = "d5n0pmq4ueiac.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -630,7 +603,7 @@ resource "aws_route53_record" "touchpoints_digital_gov_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "d5n0pmq4ueiac.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -757,7 +730,7 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_1" {
   name            = "qqtoqzlc5a24irzufsu4lbdpoc3mvr3n._domainkey.app.touchpoints.digital.gov"
   type            = "CNAME"
   ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
+  allow_overwrite = true # Add this to handle conflicts
   records         = ["qqtoqzlc5a24irzufsu4lbdpoc3mvr3n.dkim.amazonses.com"]
 }
 
@@ -766,7 +739,7 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_2" {
   name            = "4dh5jgv5chdo2q3axkftnini7j7xkdjx._domainkey.app.touchpoints.digital.gov"
   type            = "CNAME"
   ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
+  allow_overwrite = true # Add this to handle conflicts
   records         = ["4dh5jgv5chdo2q3axkftnini7j7xkdjx.dkim.amazonses.com"]
 }
 
@@ -775,18 +748,18 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
   name            = "pwa5cvp3cde3aghrojag7ketcjaeytp2._domainkey.app.touchpoints.digital.gov"
   type            = "CNAME"
   ttl             = 1800
-  allow_overwrite = true  # Add this to handle conflicts
+  allow_overwrite = true # Add this to handle conflicts
   records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
 }
 
 # Mail records moved to mail subdomain
 resource "aws_route53_record" "mail_touchpoints_digital_gov_mx" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail.touchpoints.digital.gov."  # Mail subdomain for general email
+  name            = "mail.touchpoints.digital.gov." # Mail subdomain for general email
   type            = "MX"
   ttl             = "600"
   allow_overwrite = true
-  records         = [
+  records = [
     "10 inbound-smtp.us-east-1.amazonaws.com"
   ]
 
@@ -901,9 +874,9 @@ resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
 
 resource "aws_route53_record" "touchpoints_digital_gov_spf" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name = "mail.touchpoints.digital.gov"
-  type = "TXT"
-  ttl = 600
+  name    = "mail.touchpoints.digital.gov"
+  type    = "TXT"
+  ttl     = 600
   records = ["v=spf1 include:amazonses.com ~all"]
 }
 

@@ -12,7 +12,7 @@ resource "aws_route53_zone" "datagov_zone" {
 #checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53
 resource "aws_kms_key" "datagov_zone" {
 
-  # See Route53 key requirements here: 
+  # See Route53 key requirements here:
   # https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring-dnssec-cmk-requirements.html
   customer_master_key_spec = "ECC_NIST_P256"
   deletion_window_in_days  = 7
@@ -113,7 +113,7 @@ resource "aws_route53_record" "datagov_34193244109_a" {
 
   alias {
     name                   = "dg7ira9sfp69m.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -125,7 +125,7 @@ resource "aws_route53_record" "datagov_aaaa" {
 
   alias {
     name                   = "dg7ira9sfp69m.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -415,10 +415,8 @@ resource "aws_route53_record" "datagov_strategyd3mxkpq217356pcloudfrontnet_cname
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "strategy"
   type    = "CNAME"
-
   ttl     = 300
-  records = ["d3mxkpq217356p.cloudfront.net"]
-
+  records = ["strategy.data.gov.external-domains-production.cloud.gov."]
 }
 
 
@@ -576,11 +574,9 @@ resource "aws_route53_record" "datagov_acmechallengeresourcesstagingCTRQ5trgMF0K
 resource "aws_route53_record" "datagov_acmechallengestrategyHjy5O04QmUqj4qgVY4jRisqf9oMl3G3z0pRo4Irlcg_txt" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "_acme-challenge.strategy"
-  type    = "TXT"
-
+  type    = "CNAME"
   ttl     = 300
-  records = ["H_jy5O04QmUqj4qgVY4jRisqf9oMl3G3z0pRo4Irlcg"]
-
+  records = ["_acme-challenge.strategy.data.gov.external-domains-production.cloud.gov."]
 }
 
 

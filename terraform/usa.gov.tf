@@ -5,26 +5,20 @@ resource "aws_route53_zone" "usa_gov_zone" {
   }
 }
 
-resource "aws_route53_record" "usa_gov_analytics_usa_gov_a" {
+resource "aws_route53_record" "usa_gov_analytics_challenge" {
   zone_id = aws_route53_zone.usa_gov_zone.zone_id
-  name    = "analytics.usa.gov."
-  type    = "A"
-  alias {
-    name                   = "dkm80j4hktly2.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
+  name    = "_acme-challenge.analytics.usa.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.analytics.usa.gov.external-domains-production.cloud.gov."]
 }
 
-resource "aws_route53_record" "usa_gov_analytics_usa_gov_aaaa" {
+resource "aws_route53_record" "usa_gov_analytics_cname" {
   zone_id = aws_route53_zone.usa_gov_zone.zone_id
   name    = "analytics.usa.gov."
-  type    = "AAAA"
-  alias {
-    name                   = "dkm80j4hktly2.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
+  type    = "CNAME"
+  ttl     = 120
+  records = ["analytics.usa.gov.external-domains-production.cloud.gov."]
 }
 
 # USWDS ------------------------------------------------

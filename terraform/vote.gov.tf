@@ -6,20 +6,20 @@ resource "aws_route53_zone" "vote_gov_zone" {
 }
 
 #
-#   ___ _ __ ___  ___ 
+#   ___ _ __ ___  ___
 #  / __| '_ ` _ \/ __|
 # | (__| | | | | \__ \
 #  \___|_| |_| |_|___/
-#                  
+#
 #
 
 
 #
-#      _            
+#      _
 #   __| | _____   __
 #  / _` |/ _ \ \ / /
-# | (_| |  __/\ V / 
-#  \__,_|\___| \_/ 
+# | (_| |  __/\ V /
+#  \__,_|\___| \_/
 #
 #
 
@@ -55,12 +55,12 @@ resource "aws_route53_record" "dev_cms_vote_gov_cname" {
   records = ["cms-dev.vote.gov.external-domains-production.cloud.gov."]
 }
 
-#                      _ 
+#                      _
 #  _ __  _ __ ___   __| |
 # | '_ \| '__/ _ \ / _` |
 # | |_) | | | (_) | (_| |
 # | .__/|_|  \___/ \__,_|
-# |_|                    
+# |_|
 #
 resource "aws_route53_record" "prod__acme_challenge_vote_gov_cname" {
   zone_id = aws_route53_zone.vote_gov_zone.zone_id
@@ -94,12 +94,12 @@ resource "aws_route53_record" "prod_cms_vote_gov_cname" {
   records = ["cms.vote.gov.external-domains-production.cloud.gov."]
 }
 
-#      _                   
-#  ___| |_ __ _  __ _  ___ 
+#      _
+#  ___| |_ __ _  __ _  ___
 # / __| __/ _` |/ _` |/ _ \
 # \__ \ || (_| | (_| |  __/
 # |___/\__\__,_|\__, |\___|
-#               |___/      
+#               |___/
 #
 
 resource "aws_route53_record" "stage__acme_challenge_stage_cms_vote_gov_cname" {
@@ -135,12 +135,12 @@ resource "aws_route53_record" "stage_cms_vote_gov_cname" {
 }
 
 #
-#  _            _   
-# | |_ ___  ___| |_ 
+#  _            _
+# | |_ ___  ___| |_
 # | __/ _ \/ __| __|
-# | ||  __/\__ \ |_ 
+# | ||  __/\__ \ |_
 #  \__\___||___/\__|
-#                   
+#
 
 resource "aws_route53_record" "test__acme_challenge_ssg_test_vote_gov_cname" {
   zone_id = aws_route53_zone.vote_gov_zone.zone_id
@@ -175,12 +175,12 @@ resource "aws_route53_record" "test_cms_vote_gov_cname" {
 }
 
 #
-#     __                 
-#    / /__ _ __ ___  ___ 
+#     __
+#    / /__ _ __ ___  ___
 #   / / __| '_ ` _ \/ __|
 #  / / (__| | | | | \__ \
 # /_/ \___|_| |_| |_|___/
-#                       
+#
 #
 
 resource "aws_route53_record" "vote_gov_vote_gov_a" {
@@ -189,7 +189,7 @@ resource "aws_route53_record" "vote_gov_vote_gov_a" {
   type    = "A"
   alias {
     name                   = "d3uxnatkzd0hy.cloudfront.net"
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -200,7 +200,7 @@ resource "aws_route53_record" "vote_gov_vote_gov_aaaa" {
   type    = "AAAA"
   alias {
     name                   = "d3uxnatkzd0hy.cloudfront.net"
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -238,7 +238,7 @@ resource "aws_route53_record" "vote_gov_caa" {
   records = [
     "0 issue \"letsencrypt.org\"",
     "0 issue \"digicert.com\""
-    ]
+  ]
 }
 
 # CAA records for subdomains (cannot add for search.vote.gov due to existing CNAME)

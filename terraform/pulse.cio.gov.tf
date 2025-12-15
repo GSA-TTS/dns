@@ -18,7 +18,7 @@ resource "aws_route53_record" "pulse_cio_gov_pulse_cio_gov_a" {
 
   alias {
     name                   = local.pulse_cloudfront
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
@@ -30,7 +30,7 @@ resource "aws_route53_record" "pulse_cio_gov_pulse_cio_gov_aaaa" {
 
   alias {
     name                   = local.pulse_cloudfront
-    zone_id                = local.cloud_gov_cloudfront_zone_id
+    zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
 }
