@@ -368,6 +368,13 @@ resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname"
 }
 
 # public-sans.digital.gov
+resource "aws_route53_record" "public_sans_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "public-sans.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["public-sans.digital.gov.external-domains-production.cloud.gov."]
+}
 
 resource "aws_route53_record" "_acme-challenge_public_sans_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
