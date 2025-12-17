@@ -396,7 +396,7 @@ resource "aws_route53_record" "datagov_resourcesd9v2xy0mx1ayqcloudfrontnet_cname
   type    = "CNAME"
 
   ttl     = 300
-  records = ["d9v2xy0mx1ayq.cloudfront.net"]
+  records = ["resources.data.gov.external-domains-production.cloud.gov"]
 
 }
 
@@ -546,17 +546,6 @@ resource "aws_route53_record" "datagov_mloj922e44u1o54qmtbqbi4k6r_txt" {
 
   ttl     = 300
   records = ["mloj922e44u1o54qmtbqbi4k6r"]
-
-}
-
-
-resource "aws_route53_record" "datagov_acmechallengeresourcesW9OAmioR3ViZvIRze2pvvmDgNtVaYqcP2Cft0lgcU_txt" {
-  zone_id = aws_route53_zone.datagov_zone.zone_id
-  name    = "_acme-challenge.resources"
-  type    = "TXT"
-
-  ttl     = 300
-  records = ["W9OAmi-oR3ViZvIRze2pvvmDgNtVaYqcP2Cft_0lgcU"]
 
 }
 
