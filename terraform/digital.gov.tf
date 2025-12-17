@@ -367,27 +367,14 @@ resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname"
   records = ["_acme-challenge.v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
 
-# public-sans.digital.gov — A
-resource "aws_route53_record" "public_sans_digital_gov_a" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "public-sans.digital.gov."
-  type    = "A"
-  alias {
-    name                   = "d30jruftdogur6.cloudfront.net."
-    zone_id                = local.cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
+# public-sans.digital.gov
 
-resource "aws_route53_record" "public_sans_digital_gov_aaaa" {
+resource "aws_route53_record" "_acme-challenge_public_sans_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "public-sans.digital.gov."
-  type    = "AAAA"
-  alias {
-    name                   = "d30jruftdogur6.cloudfront.net."
-    zone_id                = local.cloudfront_zone_id
-    evaluate_target_health = false
-  }
+  name    = "_acme-challenge.public-sans.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.public-sans.digital.gov.external-domains-production.cloud.gov."]
 }
 
 # accessibility.digital.gov — CNAME -------------------------------
