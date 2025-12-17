@@ -108,7 +108,15 @@ resource "aws_route53_record" "proposal_cname" {
   name    = "proposal.pif.gov."
   type    = "CNAME"
   ttl     = 120
-  records = ["dr7mtwxvpp8vf.cloudfront.net"]
+  records = ["proposal.pif.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "proposal_acme_challenge" {
+  zone_id = aws_route53_zone.pif_toplevel.zone_id
+  name    = "_acme-challenge.proposal.pif.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.proposal.pif.gov.external-domains-production.cloud.gov."]
 }
 
 resource "aws_route53_record" "proposal_txt" {
