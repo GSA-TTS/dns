@@ -400,6 +400,16 @@ resource "aws_route53_record" "datagov_resourcesd9v2xy0mx1ayqcloudfrontnet_cname
 
 }
 
+resource "aws_route53_record" "datagov_resources_acme_challenge_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.resources"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.resources.data.gov.external-domains-production.cloud.gov"]
+
+}
+
 
 resource "aws_route53_record" "datagov_resourcesstagingd13l8e1a7ekkcacloudfrontnet_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
