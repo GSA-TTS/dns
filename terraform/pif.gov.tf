@@ -188,7 +188,15 @@ resource "aws_route53_record" "apply_pif_cname" {
   name    = "apply.pif.gov."
   type    = "CNAME"
   ttl     = 300
-  records = ["d27fivolvees0i.cloudfront.net"]
+  records = ["apply.pif.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "apply_pif_acme_challenge" {
+  zone_id = aws_route53_zone.pif_toplevel.zone_id
+  name    = "_acme-challenge.apply.pif.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.apply.pif.gov.external-domains-production.cloud.gov."]
 }
 
 output "pif_ns" {
