@@ -30,6 +30,14 @@ resource "aws_route53_record" "www_aaaa" {
   }
 }
 
+resource "aws_route53_record" "www_apex_acme_challenge" {
+  zone_id = aws_route53_zone.pif_toplevel.zone_id
+  name    = "_acme-challenge.pif.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.pif.gov.external-domains-production.cloud.gov."]
+}
+
 resource "aws_route53_record" "mx" {
   zone_id = aws_route53_zone.pif_toplevel.zone_id
   name    = "pif.gov."
@@ -181,6 +189,14 @@ resource "aws_route53_record" "www-main_aaaa" {
     zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
+}
+
+resource "aws_route53_record" "www_main_acme_challenge" {
+  zone_id = aws_route53_zone.pif_toplevel.zone_id
+  name    = "_acme-challenge.www.pif.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.www.pif.gov.external-domains-production.cloud.gov."]
 }
 
 resource "aws_route53_record" "apply_pif_cname" {
