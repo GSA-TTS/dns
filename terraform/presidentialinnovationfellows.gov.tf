@@ -31,7 +31,7 @@ resource "aws_route53_record" "presidentialinnovationfellows_www_aaaa" {
 }
 
 resource "aws_route53_record" "presidentialinnovationfellows_www_acme_challenge" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  zone_id = aws_route53_zone.presidentialinnovationfellows_toplevel.zone_id
   name    = "_acme-challenge.www.presidentialinnovationfellows.gov."
   type    = "CNAME"
   ttl     = 60
@@ -63,7 +63,7 @@ resource "aws_route53_record" "presidentialinnovationfellows_apex_aaaa" {
 }
 
 resource "aws_route53_record" "presidentialinnovationfellows_apex_acme_challenge" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  zone_id = aws_route53_zone.presidentialinnovationfellows_toplevel.zone_id
   name    = "_acme-challenge.presidentialinnovationfellows.gov."
   type    = "CNAME"
   ttl     = 60
