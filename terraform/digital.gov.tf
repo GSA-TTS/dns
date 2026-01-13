@@ -509,14 +509,6 @@ resource "aws_route53_record" "demo_touchpoints_digital_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "_acme-challenge_demo_touchpoints_digital_gov_cname" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "_acme-challenge.demo.touchpoints.digital.gov."
-  type    = "CNAME"
-  ttl     = 300
-  records = ["_acme-challenge.demo.touchpoints.digital.gov.external-domains-production.cloud.gov."]
-}
-
 # DEMO Touchpoints APP / Amazon SES Verification TXT Record
 # demo.touchpoints.digital.gov
 resource "aws_route53_record" "demo_touchpoints_digital_gov_verification_txt" {
@@ -608,14 +600,6 @@ resource "aws_route53_record" "touchpoints_digital_gov_aaaa" {
     zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
-}
-
-resource "aws_route53_record" "_acme-challenge_touchpoints_digital_gov_cname" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "_acme-challenge.touchpoints.digital.gov."
-  type    = "CNAME"
-  ttl     = 300
-  records = ["_acme-challenge.touchpoints.digital.gov.external-domains-production.cloud.gov."]
 }
 
 # Touchpoints APP / Amazon SES Verification TXT Record
@@ -900,24 +884,6 @@ module "digital_gov__email_security" {
     "google-site-verification=Mi2rwVMxdp3eSbZughKvN0M_dwi6WLxMrRSsnLOWyVI",
     local.spf_hubspot
   ]
-}
-
-# demo.touchpoints.digital.gov TXT / ACME Challenge
-resource "aws_route53_record" "demo_touchpoints_digital_gov__acme-challenge_txt" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "_acme-challenge.demo.touchpoints.digital.gov."
-  type    = "TXT"
-  ttl     = 120
-  records = ["n77f2RwJfGyS0NuSm-qIaf0FZEEURhqEACLML32hV0Y"]
-}
-
-# touchpoints.digital.gov TXT / ACME Challenge
-resource "aws_route53_record" "touchpoints_digital_gov__acme-challenge_txt" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "_acme-challenge.touchpoints.digital.gov."
-  type    = "TXT"
-  ttl     = 120
-  records = ["Ho5lFIaJK7J44nLyBWGpfMBRNc96eL7-QnMuBII-4Uc"]
 }
 
 # standards.digital.gov — CNAME -------------------------------
