@@ -509,6 +509,14 @@ resource "aws_route53_record" "demo_touchpoints_digital_gov_aaaa" {
   }
 }
 
+resource "aws_route53_record" "_acme-challenge_demo_touchpoints_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.demo.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.demo.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
 # DEMO Touchpoints APP / Amazon SES Verification TXT Record
 # demo.touchpoints.digital.gov
 resource "aws_route53_record" "demo_touchpoints_digital_gov_verification_txt" {
@@ -600,6 +608,14 @@ resource "aws_route53_record" "touchpoints_digital_gov_aaaa" {
     zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
+}
+
+resource "aws_route53_record" "_acme-challenge_touchpoints_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.touchpoints.digital.gov.external-domains-production.cloud.gov."]
 }
 
 # Touchpoints APP / Amazon SES Verification TXT Record
