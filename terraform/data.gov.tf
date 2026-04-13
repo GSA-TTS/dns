@@ -314,6 +314,17 @@ resource "aws_route53_record" "datagov_catalogdevd2jqk88ququ1n9cloudfrontnet_cna
 }
 
 
+resource "aws_route53_record" "datagov_catalogoldd7jedrxgk3wkgcloudfrontnet_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "catalog-old"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["d7jedrxgk3wkg.cloudfront.net"]
+
+}
+
+
 resource "aws_route53_record" "datagov_catalogbetadatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "catalog-beta"
@@ -630,5 +641,16 @@ resource "aws_route53_record" "datagov_108d9367ec7e67814fe17cc2a0173a81catalogde
 
   ttl     = 300
   records = ["_fb09f0b389b6e9a8eeefc817364e9df9.cltjbwlkcy.acm-validations.aws."]
+
+}
+
+
+resource "aws_route53_record" "datagov_66bd98869eaee7859cb8a138eccd1b26catalogold40c3d56759e382335c901f06db9e2662jkddzztszmacmvalidationsaws_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_66bd98869eaee7859cb8a138eccd1b26.catalog-old.data.gov"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_40c3d56759e382335c901f06db9e2662.jkddzztszm.acm-validations.aws."]
 
 }
