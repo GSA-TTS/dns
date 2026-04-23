@@ -182,6 +182,17 @@ resource "aws_route53_record" "datagov_acmechallengeacmechallengecatalogbetadata
 }
 
 
+resource "aws_route53_record" "datagov_acmechallengeacmechallengetestdatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.test"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.test.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
 resource "aws_route53_record" "datagov_acmechallengeacmechallengeharvestdatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "_acme-challenge.harvest"
@@ -189,6 +200,28 @@ resource "aws_route53_record" "datagov_acmechallengeacmechallengeharvestdatagove
 
   ttl     = 300
   records = ["_acme-challenge.harvest.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
+resource "aws_route53_record" "datagov_acmechallengeacmechallengeharvestdevdatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.harvest-dev"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.harvest-dev.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
+resource "aws_route53_record" "datagov_acmechallengeacmechallengeharveststagedatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.harvest-stage"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.harvest-stage.data.gov.external-domains-production.cloud.gov."]
 
 }
 
@@ -343,6 +376,39 @@ resource "aws_route53_record" "datagov_harvestdatagovexternaldomainsproductioncl
 
   ttl     = 300
   records = ["harvest.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
+resource "aws_route53_record" "datagov_harvestdevd32pvlr5ui2s44cloudfrontnet_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "harvest-dev"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["d32pvlr5ui2s44.cloudfront.net"]
+
+}
+
+
+resource "aws_route53_record" "datagov_harveststaged3u2ii6pd1oe6scloudfrontnet_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "harvest-stage"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["d3u2ii6pd1oe6s.cloudfront.net"]
+
+}
+
+
+resource "aws_route53_record" "datagov_testdatagovdo60cjbdl8pfncloudfrontnet_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "test"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["do60cjbdl8pfn.cloudfront.net"]
 
 }
 
@@ -652,5 +718,49 @@ resource "aws_route53_record" "datagov_66bd98869eaee7859cb8a138eccd1b26catalogol
 
   ttl     = 300
   records = ["_40c3d56759e382335c901f06db9e2662.jkddzztszm.acm-validations.aws."]
+
+}
+
+
+resource "aws_route53_record" "datagov_fbdc0bd71613d2b72e512cfcc88c2f19harvestdatagov82c220ac76833c3f14a1b2e56a1427d3jkddzztszmacmvalidationsaws_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_fbdc0bd71613d2b72e512cfcc88c2f19.harvest.data.gov."
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_82c220ac76833c3f14a1b2e56a1427d3.jkddzztszm.acm-validations.aws."]
+
+}
+
+
+resource "aws_route53_record" "datagov_06f14e249fa6fc347ac7940c90271b04harvestdev46b1d45cd64fd7ee56dd0e20752321d3jkddzztszmacmvalidationsaws_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_06f14e249fa6fc347ac7940c90271b04.harvest-dev.data.gov."
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_46b1d45cd64fd7ee56dd0e20752321d3.jkddzztszm.acm-validations.aws."]
+
+}
+
+
+resource "aws_route53_record" "datagov_7aaf51f653adfc23bd6e74a2edfab070harveststage62238e32c6fcdc9ca67093229a71a644jkddzztszmacmvalidationsaws_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_7aaf51f653adfc23bd6e74a2edfab070.harvest-stage.data.gov."
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_62238e32c6fcdc9ca67093229a71a644.jkddzztszm.acm-validations.aws."]
+
+}
+
+
+resource "aws_route53_record" "datagov_aee06ef2c7b50b3abf04c9e064c6ec2btestdatagov5f1bf3fb09d69514701a6614ca197e95jkddzztszmacmvalidationsaws_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_aee06ef2c7b50b3abf04c9e064c6ec2b.test.data.gov."
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_5f1bf3fb09d69514701a6614ca197e95.jkddzztszm.acm-validations.aws."]
 
 }
