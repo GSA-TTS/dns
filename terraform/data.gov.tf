@@ -375,7 +375,7 @@ resource "aws_route53_record" "datagov_harvestdatagovexternaldomainsproductioncl
   type    = "CNAME"
 
   ttl     = 300
-  records = ["harvest.data.gov.external-domains-production.cloud.gov."]
+  records = ["d3g5uufc50sfwz.cloudfront.net"]
 
 }
 
