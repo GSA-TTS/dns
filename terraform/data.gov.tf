@@ -182,6 +182,28 @@ resource "aws_route53_record" "datagov_acmechallengeacmechallengecatalogbetadata
 }
 
 
+resource "aws_route53_record" "datagov_acmechallengeacmechallengecatalogdevdatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.catalog-dev"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.catalog-dev.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
+resource "aws_route53_record" "datagov_acmechallengeacmechallengecatalogstagedatagovexternaldomainsproductioncloudgov_cname" {
+  zone_id = aws_route53_zone.datagov_zone.zone_id
+  name    = "_acme-challenge.catalog-stage"
+  type    = "CNAME"
+
+  ttl     = 300
+  records = ["_acme-challenge.catalog-stage.data.gov.external-domains-production.cloud.gov."]
+
+}
+
+
 resource "aws_route53_record" "datagov_acmechallengeacmechallengetestdatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "_acme-challenge.test"
@@ -325,24 +347,24 @@ resource "aws_route53_record" "datagov_catalogd2s65feajdp88kcloudfrontnet_cname"
 }
 
 
-resource "aws_route53_record" "datagov_catalogstaged1u59lafwydg4acloudfrontnet_cname" {
+resource "aws_route53_record" "datagov_catalogstagedatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "catalog-stage"
   type    = "CNAME"
 
   ttl     = 300
-  records = ["d1u59lafwydg4a.cloudfront.net"]
+  records = ["catalog-stage.data.gov.external-domains-production.cloud.gov."]
 
 }
 
 
-resource "aws_route53_record" "datagov_catalogdevd2jqk88ququ1n9cloudfrontnet_cname" {
+resource "aws_route53_record" "datagov_catalogdevdatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "catalog-dev"
   type    = "CNAME"
 
   ttl     = 300
-  records = ["d2jqk88ququ1n9.cloudfront.net"]
+  records = ["catalog-dev.data.gov.external-domains-production.cloud.gov."]
 
 }
 
@@ -380,24 +402,24 @@ resource "aws_route53_record" "datagov_harvestdatagovexternaldomainsproductioncl
 }
 
 
-resource "aws_route53_record" "datagov_harvestdevd32pvlr5ui2s44cloudfrontnet_cname" {
+resource "aws_route53_record" "datagov_harvestdevdatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "harvest-dev"
   type    = "CNAME"
 
   ttl     = 300
-  records = ["d32pvlr5ui2s44.cloudfront.net"]
+  records = ["harvest-dev.data.gov.external-domains-production.cloud.gov."]
 
 }
 
 
-resource "aws_route53_record" "datagov_harveststaged3u2ii6pd1oe6scloudfrontnet_cname" {
+resource "aws_route53_record" "datagov_harveststagedatagovexternaldomainsproductioncloudgov_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "harvest-stage"
   type    = "CNAME"
 
   ttl     = 300
-  records = ["d3u2ii6pd1oe6s.cloudfront.net"]
+  records = ["harvest-stage.data.gov.external-domains-production.cloud.gov."]
 
 }
 
