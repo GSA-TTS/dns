@@ -731,22 +731,6 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
   records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
 }
 
-# Mail records moved to mail subdomain
-resource "aws_route53_record" "mail_touchpoints_digital_gov_mx" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail.touchpoints.digital.gov." # Mail subdomain for general email
-  type            = "MX"
-  ttl             = "600"
-  allow_overwrite = true
-  records = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 # Touchpoints Staging APP / Amazon SES Verification TXT Record
 resource "aws_route53_record" "touchpoints_staging_aws_ses" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -840,7 +824,9 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
   records = ["anyljchthsaitorr6matbfeoeyug34jh.dkim.amazonses.com"]
 }
 
-# Touchpoints MX Records
+# Configure a custom MAIL FROM (or bounce address) domain
+# See https://docs.aws.amazon.com/ses/latest/dg/mail-from.html
+# We are *not* configuring a domain to receive inbound email here
 resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "mail.touchpoints.digital.gov"
