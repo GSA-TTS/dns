@@ -1,0 +1,3 @@
+[tools]
+opentofu = "1.13.1"
+python = "3.13.7"

@@ -10,7 +10,7 @@ terraform {
     }
   }
 
-  required_version = "~> 1.1"
+  required_version = "~> 1.13.1"
   backend "s3" {
     region = "us-east-1"
   }

@@ -44,9 +44,8 @@ def get_zone_tags(route53_client, zone):
     ]
 
 
-def second_level_domains():
+def second_level_domains(route53):
     """Returns the set of second-level domains we control."""
-    route53 = boto3.client("route53")
     response = route53.list_hosted_zones()
     return set(
         zone["Name"].rstrip(".")
@@ -57,15 +56,17 @@ def second_level_domains():
 
 # all second-level domains must have SPF and DMARC
 # https://cyber.dhs.gov/bod/18-01/#compliance-guide
-@pytest.mark.parametrize("domain", second_level_domains())
-def test_has_email_security_records(domain):
-    result = checkdmarc.check_domains([domain])
+@pytest.mark.integration
+def test_has_email_security_records():
+    route53 = boto3.client("route53")
+    for domain in second_level_domains(route53):
+        result = checkdmarc.check_domains([domain])
 
-    assert result["spf"]["valid"], f"{domain} has missing/invalid SPF record"
-    assert result["dmarc"]["valid"], f"{domain} has missing/invalid DMARC record"
+        assert result["spf"]["valid"], f"{domain} has missing/invalid SPF record"
+        assert result["dmarc"]["valid"], f"{domain} has missing/invalid DMARC record"
 
-    # https://cyber.dhs.gov/bod/18-01/#where-should-dmarc-reports-be-sent
-    reporting_addrs = [
-        val["address"] for val in result["dmarc"]["tags"]["rua"]["value"]
-    ]
-    assert any(addr == "reports@dmarc.cyber.dhs.gov" for addr in reporting_addrs)
+        # https://cyber.dhs.gov/bod/18-01/#where-should-dmarc-reports-be-sent
+        reporting_addrs = [
+            val["address"] for val in result["dmarc"]["tags"]["rua"]["value"]
+        ]
+        assert any(addr == "reports@dmarc.cyber.dhs.gov" for addr in reporting_addrs)
