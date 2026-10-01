@@ -1,5 +1,4 @@
-boto3~=1.26
-checkdmarc~=5.9
-pytest~=7.3
-dnspython~=2.6.0rc1
-urllib3~=1.26
+boto3==1.43.106
+checkdmarc==6.0.3
+pytest==9.1.1
+dnspython==2.8.0
