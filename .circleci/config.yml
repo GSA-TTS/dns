@@ -2,38 +2,54 @@ version: 2.1
 orbs:
   tfsec: mycodeself/tfsec@1.1.0
 
+executors:
+  mise:
+    docker:
+      - image: ghcr.io/jdx/mise:2026.9.11-debian
+
+commands:
+  install-tools:
+    steps:
+      - run:
+          name: Install pinned tools
+          command: |
+            mise trust
+            mise install
+            mise exec -- tofu version
+            mise exec -- python --version
+
 jobs:
   plan:
-    docker:
-      - image: hashicorp/terraform:1.1.5
+    executor: mise
     steps:
       - checkout
+      - install-tools
       - run:
-          name: Set up Terraform
-          # https://discuss.circleci.com/t/create-separate-steps-jobs-for-pr-forks-versus-branches/13419/2
+          name: Validate OpenTofu configuration
           command: |
-            cd terraform
-            if [[ $(echo "$CIRCLE_BRANCH" | grep -c "pull") -gt 0 ]]; then
-              echo "This is from a fork."
-              terraform init -backend=false -input=false
+            mise exec -- tofu fmt -check -recursive
+            mise exec -- tofu -chdir=terraform/bootstrap init -backend=false -input=false -lockfile=readonly
+            mise exec -- tofu -chdir=terraform/bootstrap validate
+            if [[ -n "$AWS_ACCESS_KEY_ID" && -n "$AWS_SECRET_ACCESS_KEY" ]]; then
+              mise exec -- tofu -chdir=terraform init -backend-config=backend.tfvars -input=false -lockfile=readonly
             else
-              terraform init -backend-config=backend.tfvars -input=false
+              mise exec -- tofu -chdir=terraform init -backend=false -input=false -lockfile=readonly
             fi
+            mise exec -- tofu -chdir=terraform validate
       - run:
-          name: Validate Terraform config
+          name: Create OpenTofu plan
           command: |
-            cd terraform
-            if [[ $(echo "$CIRCLE_BRANCH" | grep -c "pull") -gt 0 ]]; then
-              echo "This is from a fork."
-              terraform validate
+            mkdir -p workspace
+            if [[ -n "$AWS_ACCESS_KEY_ID" && -n "$AWS_SECRET_ACCESS_KEY" ]]; then
+              mise exec -- tofu -chdir=terraform plan -input=false -out=../workspace/tfplan
             else
-              terraform plan -input=false
+              echo "AWS credentials are unavailable; skipping the remote-state plan."
+              touch workspace/no-plan
             fi
-
       - persist_to_workspace:
           root: .
           paths:
-            - ./terraform/*
+            - workspace
 
   tfsec:
     executor: tfsec/default
@@ -44,40 +60,55 @@ jobs:
           #exclude-checks: ''
 
   checkov:
-     docker:
-       - image: circleci/python:latest
-     steps:
-       - checkout
-       - run:
-           name: Install checkov
-           command: pip install checkov
-       - run:
-           name: Run checkov
-           command: checkov -d ./terraform/ --skip-check CKV_AWS_18,CKV_AWS_40,CKV_AWS_144,CKV_AWS_273,CKV_AWS_289,CKV_AWS_290,CKV_AWS_355,CKV2_AWS_23,CKV2_AWS_39,CKV2_AWS_38,CKV2_AWS_62
-           # Removed CKV2_AWS_61, CKV_AWS_145, CKV_AWS_18, CKV2_AWS_6 as those are now fixed
-
-  apply:
-    docker:
-      - image: hashicorp/terraform:1.1.5
-    steps:
-      - attach_workspace:
-          at: .
-
-      - run:
-          name: Deploy the full environment
-          command: cd terraform && terraform apply -input=false -auto-approve
-
-  validate:
-    docker:
-      - image: python:3.9-alpine
+    executor: mise
     steps:
       - checkout
+      - install-tools
+      - run:
+          name: Install checkov
+          command: mise exec -- python -m pip install checkov==3.3.22
+      - run:
+          name: Run checkov
+          command: mise exec -- checkov -d ./terraform/ --skip-check CKV_AWS_18,CKV_AWS_40,CKV_AWS_144,CKV_AWS_273,CKV_AWS_289,CKV_AWS_290,CKV_AWS_355,CKV2_AWS_23,CKV2_AWS_39,CKV2_AWS_38,CKV2_AWS_62
+          # Removed CKV2_AWS_61, CKV_AWS_145, CKV_AWS_18, CKV2_AWS_6 as those are now fixed
+
+  apply:
+    executor: mise
+    steps:
+      - checkout
+      - install-tools
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy the full environment
+          command: |
+            test -f workspace/tfplan
+            mise exec -- tofu -chdir=terraform init -backend-config=backend.tfvars -input=false -lockfile=readonly
+            mise exec -- tofu -chdir=terraform apply -input=false -auto-approve ../workspace/tfplan
+
+  validate:
+    executor: mise
+    steps:
+      - checkout
+      - install-tools
       - run:
           name: Install dependencies
-          command: pip install -r requirements.txt
+          command: mise exec -- python -m pip install -r requirements.txt
       - run:
-          name: Run validations
-          command: pytest tests
+          name: Run live DNS validations
+          command: mise exec -- python -m pytest -m integration tests
+
+  test:
+    executor: mise
+    steps:
+      - checkout
+      - install-tools
+      - run:
+          name: Install dependencies
+          command: mise exec -- python -m pip install -r requirements.txt
+      - run:
+          name: Run offline tests
+          command: mise exec -- python -m pytest -m "not integration" tests
 
 workflows:
   version: 2
@@ -87,18 +118,21 @@ workflows:
       - plan
       - tfsec
       - checkov
+      - test
       - apply:
           filters:
             branches:
               only: main
           requires:
             - plan
+            - tfsec
+            - checkov
+            - test
+            - validate
       - validate:
           filters:
             branches:
               only: main
-          requires:
-            - apply
 
 experimental:
   notify:

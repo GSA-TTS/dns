@@ -5,6 +5,24 @@
 This repository holds the source code for configuring DNS for domains managed by GSA TTS.
 
 - [Technical details about this repository](doc/architecture.md)
+- [Modernization and open work implementation plan](doc/implementation_plan.md)
+
+## Local validation
+
+Install [mise](https://mise.jdx.dev/), then install the pinned OpenTofu and
+Python versions and run the offline checks:
+
+```sh
+mise trust
+mise install
+mise exec -- tofu -chdir=terraform init -backend=false -input=false -lockfile=readonly
+mise exec -- tofu -chdir=terraform validate
+mise exec -- python -m pip install -r requirements.txt
+mise exec -- python -m pytest -m "not integration" tests
+```
+
+The tests marked `integration` query Route 53 and public DNS and therefore
+require AWS credentials and network access.
 
 ## Making changes
 

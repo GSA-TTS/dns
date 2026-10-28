@@ -64,7 +64,7 @@ resource "aws_s3_bucket" "access_logs" {
   versioning {
     enabled = true
   }
-  
+
   # Server-side encryption for logs - using KMS instead of AES256
   server_side_encryption_configuration {
     rule {
@@ -90,7 +90,7 @@ resource "aws_s3_bucket" "access_logs" {
     target_bucket = aws_s3_bucket.logs_for_logs.id
     target_prefix = "log/logs-bucket/"
   }
-  
+
   # Block public access
   tags = {
     Name    = "terraform-state-logs"
@@ -104,11 +104,11 @@ resource "aws_s3_bucket" "access_logs" {
 #checkov:skip=CKV2_AWS_62:Event notifications not essential for logs-of-logs bucket
 resource "aws_s3_bucket" "logs_for_logs" {
   bucket = "tts-dns-terraform-state-logs-logs"
-  
+
   versioning {
     enabled = true
   }
-  
+
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -117,16 +117,16 @@ resource "aws_s3_bucket" "logs_for_logs" {
       }
     }
   }
-  
+
   lifecycle_rule {
     id      = "logs-retention"
     enabled = true
-    
+
     expiration {
       days = 365
     }
   }
-  
+
   tags = {
     Name    = "terraform-state-logs-logs"
     Project = "dns"
@@ -168,7 +168,7 @@ resource "aws_kms_key" "s3_encryption_key" {
   description             = "KMS key for terraform state S3 bucket encryption"
   deletion_window_in_days = 10
   enable_key_rotation     = true
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -183,7 +183,7 @@ resource "aws_kms_key" "s3_encryption_key" {
       }
     ]
   })
-  
+
   tags = {
     Name    = "terraform-state-kms-key"
     Project = "dns"
@@ -201,10 +201,10 @@ data "aws_caller_identity" "current" {}
 # Create SNS topic for S3 bucket event notifications
 resource "aws_sns_topic" "s3_events" {
   name = "terraform-state-bucket-events"
-  
+
   # Enable SNS topic encryption with KMS
   kms_master_key_id = "alias/aws/sns"
-  
+
   tags = {
     Name    = "terraform-state-sns-topic"
     Project = "dns"
@@ -214,10 +214,10 @@ resource "aws_sns_topic" "s3_events" {
 # Create logs SNS topic for log bucket event notifications
 resource "aws_sns_topic" "logs_events" {
   name = "terraform-logs-bucket-events"
-  
+
   # Enable SNS topic encryption with KMS
   kms_master_key_id = "alias/aws/sns"
-  
+
   tags = {
     Name    = "terraform-logs-sns-topic"
     Project = "dns"
@@ -226,12 +226,12 @@ resource "aws_sns_topic" "logs_events" {
 
 # Create replica logs SNS topic for replica bucket event notifications
 resource "aws_sns_topic" "replica_events" {
-  name = "terraform-replica-bucket-events"
+  name     = "terraform-replica-bucket-events"
   provider = aws.west
-  
+
   # Enable SNS topic encryption with KMS
   kms_master_key_id = "alias/aws/sns"
-  
+
   tags = {
     Name    = "terraform-replica-sns-topic"
     Project = "dns"
@@ -252,10 +252,10 @@ resource "aws_sns_topic_subscription" "logs_events_email" {
 }
 
 resource "aws_sns_topic_subscription" "replica_events_email" {
-  provider = aws.west
+  provider  = aws.west
   topic_arn = aws_sns_topic.replica_events.arn
-  protocol = "email"
-  endpoint = var.notification_email
+  protocol  = "email"
+  endpoint  = var.notification_email
 }
 
 # Allow S3 to publish to the SNS topics
@@ -271,23 +271,23 @@ resource "aws_sns_topic_policy" "logs_events_policy" {
 
 resource "aws_sns_topic_policy" "replica_events_policy" {
   provider = aws.west
-  arn    = aws_sns_topic.replica_events.arn
-  policy = data.aws_iam_policy_document.replica_events_policy_document.json
+  arn      = aws_sns_topic.replica_events.arn
+  policy   = data.aws_iam_policy_document.replica_events_policy_document.json
 }
 
 data "aws_iam_policy_document" "s3_events_policy_document" {
   statement {
     sid    = "AllowS3ToPublishToSNS"
     effect = "Allow"
-    
+
     principals {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
-    
+
     actions   = ["sns:Publish"]
     resources = [aws_sns_topic.s3_events.arn]
-    
+
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
@@ -300,15 +300,15 @@ data "aws_iam_policy_document" "logs_events_policy_document" {
   statement {
     sid    = "AllowS3ToPublishToSNS"
     effect = "Allow"
-    
+
     principals {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
-    
+
     actions   = ["sns:Publish"]
     resources = [aws_sns_topic.logs_events.arn]
-    
+
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
@@ -321,15 +321,15 @@ data "aws_iam_policy_document" "replica_events_policy_document" {
   statement {
     sid    = "AllowS3ToPublishToSNS"
     effect = "Allow"
-    
+
     principals {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
-    
+
     actions   = ["sns:Publish"]
     resources = [aws_sns_topic.replica_events.arn]
-    
+
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
@@ -341,14 +341,14 @@ data "aws_iam_policy_document" "replica_events_policy_document" {
 # Configure S3 event notifications
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.backend.id
-  
+
   # Notify on all object deletion events
   topic {
     topic_arn     = aws_sns_topic.s3_events.arn
     events        = ["s3:ObjectRemoved:*"]
     filter_suffix = ".tfstate"
   }
-  
+
   # Notify on state file creation/modification
   topic {
     topic_arn     = aws_sns_topic.s3_events.arn
@@ -359,13 +359,13 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
 
 resource "aws_s3_bucket_notification" "logs_bucket_notification" {
   bucket = aws_s3_bucket.access_logs.id
-  
+
   topic {
     topic_arn     = aws_sns_topic.logs_events.arn
     events        = ["s3:ObjectRemoved:*"]
     filter_suffix = ".log"
   }
-  
+
   topic {
     topic_arn     = aws_sns_topic.logs_events.arn
     events        = ["s3:ObjectCreated:*"]
@@ -379,7 +379,7 @@ resource "aws_s3_bucket_notification" "logs_bucket_notification" {
 resource "aws_s3_bucket" "backend_replica" {
   provider = aws.west
   bucket   = "tts-dns-terraform-state-replica"
-  
+
   versioning {
     enabled = true
   }
@@ -392,7 +392,7 @@ resource "aws_s3_bucket" "backend_replica" {
       }
     }
   }
-  
+
   # Adding lifecycle configuration
   lifecycle_rule {
     id      = "state-files"
@@ -407,13 +407,13 @@ resource "aws_s3_bucket" "backend_replica" {
       days = 914
     }
   }
-  
+
   # Create replica logs bucket in west region
   logging {
     target_bucket = aws_s3_bucket.replica_logs.id
     target_prefix = "log/replica-bucket/"
   }
-  
+
   tags = {
     Name    = "terraform-state-replica"
     Project = "dns"
@@ -427,11 +427,11 @@ resource "aws_s3_bucket" "backend_replica" {
 resource "aws_s3_bucket" "replica_logs" {
   provider = aws.west
   bucket   = "tts-dns-terraform-state-replica-logs"
-  
+
   versioning {
     enabled = true
   }
-  
+
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -440,16 +440,16 @@ resource "aws_s3_bucket" "replica_logs" {
       }
     }
   }
-  
+
   lifecycle_rule {
     id      = "logs-retention"
     enabled = true
-    
+
     expiration {
       days = 365
     }
   }
-  
+
   tags = {
     Name    = "terraform-state-replica-logs"
     Project = "dns"
@@ -459,14 +459,14 @@ resource "aws_s3_bucket" "replica_logs" {
 # Event notifications for replica bucket
 resource "aws_s3_bucket_notification" "replica_bucket_notification" {
   provider = aws.west
-  bucket = aws_s3_bucket.backend_replica.id
-  
+  bucket   = aws_s3_bucket.backend_replica.id
+
   topic {
     topic_arn     = aws_sns_topic.replica_events.arn
     events        = ["s3:ObjectRemoved:*"]
     filter_suffix = ".tfstate"
   }
-  
+
   topic {
     topic_arn     = aws_sns_topic.replica_events.arn
     events        = ["s3:ObjectCreated:*"]
@@ -487,7 +487,7 @@ resource "aws_s3_bucket_public_access_block" "backend" {
 # Block public access for replica bucket
 resource "aws_s3_bucket_public_access_block" "backend_replica" {
   provider = aws.west
-  bucket = aws_s3_bucket.backend_replica.id
+  bucket   = aws_s3_bucket.backend_replica.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -498,7 +498,7 @@ resource "aws_s3_bucket_public_access_block" "backend_replica" {
 # Block public access for replica logs bucket
 resource "aws_s3_bucket_public_access_block" "replica_logs" {
   provider = aws.west
-  bucket = aws_s3_bucket.replica_logs.id
+  bucket   = aws_s3_bucket.replica_logs.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -530,7 +530,7 @@ resource "aws_kms_key" "s3_encryption_key_west" {
   description             = "KMS key for terraform state S3 bucket encryption in west region"
   deletion_window_in_days = 10
   enable_key_rotation     = true
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -545,7 +545,7 @@ resource "aws_kms_key" "s3_encryption_key_west" {
       }
     ]
   })
-  
+
   tags = {
     Name    = "terraform-state-kms-key-west"
     Project = "dns"
@@ -555,7 +555,7 @@ resource "aws_kms_key" "s3_encryption_key_west" {
 # Create replication policy
 resource "aws_iam_policy" "replication" {
   name = "terraform-state-replication-policy"
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
