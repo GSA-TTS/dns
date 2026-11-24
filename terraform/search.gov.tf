@@ -12,7 +12,7 @@ resource "aws_route53_record" "search_gov_apex" {
   type    = "A"
 
   alias {
-    name                   = "d3b0ro7nh4961l.cloudfront.net."
+    name                   = "d36tnycuwz2od9.cloudfront.net."
     zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -24,7 +24,7 @@ resource "aws_route53_record" "search_gov_apex_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "d3b0ro7nh4961l.cloudfront.net."
+    name                   = "d36tnycuwz2od9.cloudfront.net."
     zone_id                = local.cloudfront_zone_id
     evaluate_target_health = false
   }
